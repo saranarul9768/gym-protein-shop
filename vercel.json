@@ -1,0 +1,10 @@
+{
+  "buildCommand": "echo 'Static site'",
+  "outputDirectory": ".",
+  "env": {
+    "SHOP_NAME": "Gym Protein Shop & Equipment",
+    "OWNER_EMAIL": "arulproteinshoptamilnadu@gmail.com",
+    "GSTIN": "33AMEPA1878N2ZX",
+    "UPI_ID": "9842249994"
+  }
+}
