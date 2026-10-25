@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gym Protein Shop - Management System</title>
+<style>
+:root{--bg:#F8F9FB;--card:#fff;--ink:#0F1419;--mute:#6B7280;--line:#E5E7EB;--primary:#D7261E;--accent:#2E9B57}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:14px 'Segoe UI',sans-serif}
+h1,h2,h3{font-weight:700}
+.wrap{max-width:1400px;margin:0 auto;padding:0 20px}
+header{background:var(--card);border-bottom:2px solid var(--primary);padding:16px 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.logo{font-size:22px;font-weight:800;color:var(--primary)}
+.btn{background:var(--primary);color:#fff;border:none;padding:10px 18px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px}
+.btn:hover{opacity:0.9}
+.btn.sec{background:var(--line);color:var(--ink)}
+.page{display:none}
+.page.active{display:block}
+.section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px;margin:20px 0}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-weight:600;font-size:13px}
+input,select,textarea{padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+.table th{background:var(--line);padding:10px;text-align:left;font-weight:600}
+.table td{padding:10px;border-bottom:1px solid var(--line)}
+.badge{display:inline-block;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge.ok{background:rgba(46,155,87,0.2);color:var(--accent)}
+.tab-nav{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{background:none;border:none;color:var(--mute);cursor:pointer;padding:10px 16px;font-weight:600;border-bottom:3px solid transparent}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+.stat-card{background:var(--card);padding:20px;border-radius:10px;border:1px solid var(--line)}
+.stat-num{font-size:28px;font-weight:800;color:var(--primary)}
+.stat-label{color:var(--mute);font-size:12px;margin-top:4px}
+</style>
+</head>
+<body>
+
+<header class="wrap" style="display:flex;justify-content:space-between;align-items:center">
+<div class="logo">🏋️ GYM PROTEIN SHOP</div>
+<div>
+<span id="userBadge" style="margin-right:16px">Not logged in</span>
+<button class="btn" onclick="logout()" id="logoutBtn" style="display:none">Logout</button>
+</div>
+</header>
+
+<div id="loginPage" class="page active">
+<div style="max-width:400px;margin:60px auto;background:var(--card);padding:40px;border-radius:12px;border:1px solid var(--line)">
+<h2 style="margin-bottom:8px">Welcome Back</h2>
+<p style="color:var(--mute);margin-bottom:24px">Sign in to Gym Protein Shop</p>
+
+<div class="field" style="margin-bottom:16px">
+<label>Email</label>
+<input type="email" id="loginEmail" placeholder="Enter email" autofocus>
+</div>
+
+<div class="field" style="margin-bottom:24px">
+<label>Password</label>
+<input type="password" id="loginPassword" placeholder="Enter password">
+</div>
+
+<button class="btn" onclick="login()" style="width:100%;margin-bottom:16px">Sign In</button>
+
+<div style="background:var(--line);padding:16px;border-radius:8px;font-size:12px;color:var(--mute)">
+<strong>Demo Logins:</strong><br>
+Owner: arulproteinshoptamilnadu@gmail.com / cbse1441<br>
+Employee: Gpsaepemployee1@gmail.com / auGust@2026<br>
+Customer: customer@gym.com / customer123
+</div>
+</div>
+</div>
+
+<div id="ownerPage" class="page">
+<div class="wrap">
+<h2>📊 Owner Dashboard</h2>
+<div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:20px 0">
+<div class="stat-card"><div class="stat-num">₹2,45,000</div><div class="stat-label">Monthly Sales</div></div>
+<div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Staff Members</div></div>
+<div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Products</div></div>
+</div>
+
+<div class="tab-nav">
+<button class="tab-btn active" onclick="switchTab(event,'staff')">👥 Staff</button>
+<button class="tab-btn" onclick="switchTab(event,'products')">📦 Products</button>
+</div>
+
+<div id="staff" class="tab-content">
+<button class="btn" onclick="hireEmp()" style="margin-bottom:16px">➕ Hire Employee</button>
+<table class="table">
+<thead><tr><th>Name</th><th>Email</th><th>Position</th><th>Salary</th></tr></thead>
+<tbody id="staffList"><tr><td>Pranesh</td><td>Gpsaepemployee1@gmail.com</td><td>Product Entry Staff</td><td>₹20,000</td></tr><tr><td>Viveka</td><td>Gpsaevemployee2@gmail.com</td><td>Sales Executive</td><td>₹11,000</td></tr></tbody>
+</table>
+</div>
+
+<div id="products" class="tab-content" style="display:none">
+<table class="table">
+<thead><tr><th>Product</th><th>Price</th><th>Stock</th></tr></thead>
+<tbody id="productsList"><tr><td>Gold Standard Whey</td><td>₹2,499</td><td>50</td></tr><tr><td>Mass Gainer</td><td>₹3,999</td><td>30</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="employeePage" class="page">
+<div class="wrap">
+<h2>📦 Employee Dashboard</h2>
+<div class="section">
+<h3>Add New Product</h3>
+<div class="grid">
+<div class="field"><label>Product Name *</label><input type="text" id="prodName"></div>
+<div class="field"><label>Category</label><input type="text" id="prodCat"></div>
+<div class="field"><label>Price ₹ *</label><input type="number" id="prodPrice"></div>
+<div class="field"><label>Stock *</label><input type="number" id="prodStock"></div>
+</div>
+<button class="btn" onclick="addProduct()" style="margin-top:16px">✓ Add Product</button>
+</div>
+</div>
+</div>
+
+<div id="customerPage" class="page">
+<div class="wrap">
+<h2>🛍️ Shop</h2>
+<div style="margin-bottom:20px">
+<input type="search" id="searchBox" placeholder="Search products..." style="width:100%;max-width:400px;padding:10px;border:1px solid var(--line);border-radius:6px">
+</div>
+<div id="productGrid" style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))"></div>
+</div>
+</div>
+
+<script>
+const STORE={
+  users:[
+    {id:'owner1',name:'Arul',email:'arulproteinshoptamilnadu@gmail.com',password:'cbse1441',role:'owner'},
+    {id:'emp1',name:'Pranesh',email:'Gpsaepemployee1@gmail.com',password:'auGust@2026',role:'employee',salary:20000,position:'Product Entry Staff'},
+    {id:'emp2',name:'Viveka',email:'Gpsaevemployee2@gmail.com',password:'auGust@31',role:'employee',salary:11000,position:'Sales Executive'},
+    {id:'cust1',name:'Customer',email:'customer@gym.com',password:'customer123',role:'customer'}
+  ],
+  products:[
+    {id:'p1',name:'Gold Standard Whey',price:2499,stock:50},
+    {id:'p2',name:'Mass Gainer',price:3999,stock:30}
+  ]
+};
+
+let currentUser=null;
+
+function init(){
+  let stored=localStorage.getItem('gymshop');
+  if(stored) Object.assign(STORE,JSON.parse(stored));
+  else saveData();
+}
+
+function saveData(){
+  localStorage.setItem('gymshop',JSON.stringify(STORE));
+}
+
+function login(){
+  const email=document.getElementById('loginEmail').value.toLowerCase();
+  const pass=document.getElementById('loginPassword').value;
+  const user=STORE.users.find(u=>u.email.toLowerCase()===email&&u.password===pass);
+  if(!user){alert('Invalid login');return}
+  currentUser=user;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('logoutBtn').style.display='block';
+  document.getElementById('userBadge').textContent=`${user.role.toUpperCase()}: ${user.name}`;
+  if(user.role==='owner') document.getElementById('ownerPage').classList.add('active');
+  else if(user.role==='employee') document.getElementById('employeePage').classList.add('active');
+  else {document.getElementById('customerPage').classList.add('active');loadShop()}
+}
+
+function logout(){
+  currentUser=null;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('loginPage').classList.add('active');
+  document.getElementById('logoutBtn').style.display='none';
+  document.getElementById('userBadge').textContent='Not logged in';
+}
+
+function switchTab(e,tab){
+  document.querySelectorAll('.tab-content').forEach(t=>t.style.display='none');
+  document.getElementById(tab).style.display='block';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+}
+
+function hireEmp(){
+  alert('Hire employee feature coming soon!');
+}
+
+function addProduct(){
+  const name=document.getElementById('prodName').value;
+  const price=parseInt(document.getElementById('prodPrice').value);
+  const stock=parseInt(document.getElementById('prodStock').value);
+  if(!name||!price||!stock){alert('Fill all fields');return}
+  STORE.products.push({id:'p'+(Math.random()*1000|0),name,price,stock});
+  saveData();
+  alert('Product added!');
+  location.reload();
+}
+
+function loadShop(){
+  const html=STORE.products.map(p=>`
+    <div style="border:1px solid var(--line);border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:40px;margin-bottom:8px">📦</div>
+      <h4 style="margin:0 0 4px 0;font-size:14px">${p.name}</h4>
+      <div style="color:var(--primary);font-weight:700;margin:8px 0">₹${p.price}</div>
+      <div style="color:var(--mute);font-size:12px;margin-bottom:12px">Stock: ${p.stock}</div>
+      <button class="btn" onclick="alert('Added to cart!')">Add to Cart</button>
+    </div>
+  `).join('');
+  document.getElementById('productGrid').innerHTML=html;
+}
+
+init();
+</script>
+
+</body>
+</html>
