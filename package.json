@@ -1,0 +1,13 @@
+{
+  "name": "gym-protein-shop",
+  "version": "1.0.0",
+  "description": "Gym Protein Shop - Complete E-commerce & HR Management System",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Open index.html in browser'",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": ["gym", "supplements", "ecommerce", "management"],
+  "author": "Arul",
+  "license": "MIT"
+}
